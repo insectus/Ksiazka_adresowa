@@ -1,0 +1,27 @@
+1|Damian|Krzaszcz|654656321|damian@mail.pl|ul.sw.Edka|
+2|Joanna|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edk|
+3|Joasia|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+4|Asia|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+5|Anna|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+6|Jan|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+7|Janina|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+8|Jozefa|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+9|Ola|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+10|Olga|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+11|Aleksandar|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+12|Ala|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+13|Joasia|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+14|Asia|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+15|Anna|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+16|Jan|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+17|Janina|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+18|Jozefa|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+19|Ola|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+20|Olga|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+21|Aleksandar|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+22|Ala|Krzaszcz|345235565|joanna@mail.pl|ul.sw.Edka|
+23|Damian|Krzaszcz|123456789|damine@mail.om|sdadgfdfg|
+24|Jozek|Pysz|123456789|ASd@asdaf.pl|asd asdf 23  |
+25|Adam|Mucha|123456789|Adam@moa.pl|23 asdf 44fdasdf|
+26|Jasiek|Malarz|123456789|adfa@sadf.pl|asdf 234 asdf|
+27|Damian|Krzaszcz|+48 135 654 866|damian@casdca.pl|asdfa|
