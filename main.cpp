@@ -21,7 +21,7 @@ char wczytajZnak();
 string wczytajLinie();
 string konwersjaIntNaString();
 void wyszukajPoImieniu(vector <Adresat> adresaci, int &iloscOsob);
-void wyszukajPoNazwisku(vector <Adresat> adresaci, int &iloscOsob);
+void wyszukajPoNazwisku(vector <Adresat> adresaci);
 void wyswietlWszystkieOsoby(vector <Adresat> &adresaci);
 void usunAdresata(vector <Adresat> &adresaci);
 void edytujAdresata(vector <Adresat> &adresaci);
@@ -59,7 +59,7 @@ int main() {
             wyszukajPoImieniu(adresaci, iloscOsob);
             break;
         case '3':
-            wyszukajPoNazwisku(adresaci, iloscOsob);
+            wyszukajPoNazwisku(adresaci);
             break;
         case '4':
             wyswietlWszystkieOsoby(adresaci);
@@ -277,7 +277,7 @@ void wyszukajPoImieniu(vector <Adresat> adresaci, int &iloscOsob) {
     system("pause");
 }
 
-void wyszukajPoNazwisku(vector <Adresat> adresaci, int &iloscOsob) {
+void wyszukajPoNazwisku(vector <Adresat> adresaci) {
     int ileOsob = 0;
     string nazwisko = "";
     string odmianaKoncowkiSlowaOsoba = "osob";
@@ -289,14 +289,14 @@ void wyszukajPoNazwisku(vector <Adresat> adresaci, int &iloscOsob) {
     cout << "Podaj nazwisko osoby ktora chcesz odnalezc: ";
     nazwisko = wczytajLinie();
 
-    for (int i = 0; i < iloscOsob; i ++) {
-        if (adresaci[i].nazwisko == nazwisko) {
-            cout << endl << "Id: " << adresaci[i].id << endl;
-            cout << "Imie: " << adresaci[i].imie << endl;
-            cout << "Nazwisko: " << adresaci[i].nazwisko << endl;
-            cout << "Numer telefonu: " << adresaci[i].numerTelefonu << endl;
-            cout << "Adres e-mail: " << adresaci[i].email << endl;
-            cout << "Adres: " << adresaci[i].adres << endl;
+    for (vector<Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++) {
+        if (itr -> nazwisko == nazwisko) {
+            cout << endl << "Id: " << itr -> id << endl;
+            cout << "Imie: " << itr -> imie << endl;
+            cout << "Nazwisko: " << itr -> nazwisko << endl;
+            cout << "Numer telefonu: " << itr -> numerTelefonu << endl;
+            cout << "Adres e-mail: " << itr -> email << endl;
+            cout << "Adres: " << itr -> adres << endl;
             ileOsob++;
         }
     }
