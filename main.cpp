@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -23,10 +24,10 @@ void wyszukajPoImieniu(vector <Adresat> adresaci, int &iloscOsob);
 void wyszukajPoNazwisku(vector <Adresat> adresaci, int &iloscOsob);
 void wyswietlWszystkieOsoby(vector <Adresat> &adresaci, int &iloscOsob);
 void usunAdresata(vector <Adresat> &adresaci, int &iloscOsob);
-void edytujAdresata(vector <Adresat> &adresaci, int &iloscOsob);
+void edytujAdresata(vector <Adresat> &adresaci);
 Adresat wyodrebnianieAdresata(Adresat &adresat, int &kolejnePoleObiektuAdresat, string &wyodrebnioneDaneAdresata);
+string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst);
 void aktualizujKsiazke(vector <Adresat> &adresaci);
-void zakonczProgram();
 
 int main() {
     int iloscOsob = 0;
@@ -67,10 +68,14 @@ int main() {
             usunAdresata(adresaci, iloscOsob);
             break;
         case '6':
-            edytujAdresata(adresaci, iloscOsob);
+            edytujAdresata(adresaci);
             break;
         case '9':
-            zakonczProgram();
+            exit(0);
+            break;
+        default:
+            cout << endl << "Nie ma takiej opcji w menu!" << endl << endl;
+            system("pause");
             break;
         }
     }
@@ -99,10 +104,6 @@ char wczytajZnak() {
         cout << "To nie jest pojedynczy znak. Wpisz ponownie. ";
     }
     return znak;
-}
-
-void zakonczProgram() {
-    exit(0);
 }
 
 int wczytajLiczbeCalkowita() {
@@ -360,72 +361,96 @@ void usunAdresata(vector <Adresat> &adresaci, int &iloscOsob) {
     }
 }
 
-void edytujAdresata(vector <Adresat> &adresaci, int &iloscOsob) {
-    int wybraneId, wybraneDane;
-    long long unsigned int i;
+string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst) {
+    if (!tekst.empty()) {
+        transform(tekst.begin(), tekst.end(), tekst.begin(), ::tolower);
+        tekst[0] = toupper(tekst[0]);
+    }
+    return tekst;
+}
+
+void edytujAdresata(vector <Adresat> &adresaci) {
+    int wybraneId = 0;
+    char wybraneDane;
+    bool czyIstniejeAdresat = false;
     string daneDoZmiany;
 
     system("cls");
 
-    cout << "|----- Edytuj dane adresata -----|" << endl << endl;
+    if (!adresaci.empty()) {
 
-    cout << "Podaj numer ID adresata ktorego chcesz edytowac: ";
+        cout << "|----- Edytuj dane adresata -----|" << endl << endl;
 
-    wybraneId = wczytajLiczbeCalkowita();
+        cout << "Podaj numer ID adresata ktorego chcesz edytowac: ";
 
-    for (i = 0; i < adresaci.size(); i++) {
-        if(wybraneId == adresaci[i].id) {
+        wybraneId = wczytajLiczbeCalkowita();
 
-            cout << endl << "Ktore dane zaktualizowac: " << endl;
-            cout << "1 - Imie" << endl;
-            cout << "2 - Nazwisko" << endl;
-            cout << "3 - Numer telefonu" << endl;
-            cout << "4 - Email" << endl;
-            cout << "5 - Adres" << endl;
-            cout << "6 - Powrot" << endl;
+        for (vector<Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++) {
+            if(itr->id == wybraneId) {
 
-            cout << endl << "Wybierz 1-6: ";
+                czyIstniejeAdresat = true;
 
-            wybraneDane = wczytajLiczbeCalkowita();
+                cout << endl << "Ktore dane zaktualizowac: " << endl;
+                cout << "1 - Imie" << endl;
+                cout << "2 - Nazwisko" << endl;
+                cout << "3 - Numer telefonu" << endl;
+                cout << "4 - Email" << endl;
+                cout << "5 - Adres" << endl;
+                cout << "6 - Powrot" << endl;
 
-            if(wybraneDane == 1) {
-                cout << "Podaj nowe imie: ";
-                daneDoZmiany = wczytajLinie();
-                adresaci[i].imie = daneDoZmiany;
-                cout << endl << "Imie zostalo zmienione" << endl;
-                system("pause");
-            } else if(wybraneDane == 2) {
-                cout << "Podaj nowe nazwisko: ";
-                daneDoZmiany = wczytajLinie();
-                adresaci[i].nazwisko = daneDoZmiany;
-                cout <<  endl << "Nazwisko zostalo zmienione" << endl;
-                system("pause");
-            } else if(wybraneDane == 3) {
-                cout << "Podaj nowy numer telefonu: ";
-                daneDoZmiany = wczytajLinie();
-                adresaci[i].numerTelefonu = daneDoZmiany;
-                cout <<  endl << "Numer telefonu zostal zmieniony" << endl;
-                system("pause");
-            } else if(wybraneDane == 4) {
-                cout <<  endl << "Podaj nowy email: ";
-                daneDoZmiany = wczytajLinie();
-                adresaci[i].email = daneDoZmiany;
-                cout << "Email zostal zmieniony" << endl;
-                system("pause");
-            } else if(wybraneDane == 5) {
-                cout << "Podaj nowy adres: ";
-                daneDoZmiany = wczytajLinie();
-                adresaci[i].adres = daneDoZmiany;
-                cout <<  endl << "Adres zostal zmieniony" << endl;
-                system("pause");
-            } else if(wybraneDane == 6) {
-                system("pause");
+                cout << endl << "Wybierz 1-6: ";
+
+                wybraneDane = wczytajZnak();
+
+                switch (wybraneDane) {
+                case '1':
+                    cout << "Podaj nowe imie: ";
+                    itr->imie = wczytajLinie();
+                    itr->imie = zamienPierwszaLitereNaDuzaAPozostaleNaMale(itr->imie);
+                    aktualizujKsiazke(adresaci);
+                    cout << endl << "Imie zostalo zmienione" << endl;
+                    break;
+                case '2':
+                    cout << "Podaj nowe nazwisko: ";
+                    itr->nazwisko = wczytajLinie();
+                    itr->nazwisko = zamienPierwszaLitereNaDuzaAPozostaleNaMale(itr->nazwisko);
+                    aktualizujKsiazke(adresaci);
+                    cout <<  endl << "Nazwisko zostalo zmienione" << endl;
+                    break;
+                case '3':
+                    cout << "Podaj nowy numer telefonu: ";
+                    itr->numerTelefonu = wczytajLinie();
+                    aktualizujKsiazke(adresaci);
+                    cout <<  endl << "Numer telefonu zostal zmieniony" << endl;
+                    break;
+                case '4':
+                    cout <<  endl << "Podaj nowy email: ";
+                    itr->email = wczytajLinie();
+                    aktualizujKsiazke(adresaci);
+                    cout << "Email zostal zmieniony" << endl;
+                    break;
+                case '5':
+                    cout << "Podaj nowy adres: ";
+                    itr->adres = wczytajLinie();
+                    aktualizujKsiazke(adresaci);
+                    cout <<  endl << "Adres zostal zmieniony" << endl;
+                    break;
+                case '6':
+                    cout << endl << "Powrot do menu glownego" << endl << endl;
+                    break;
+                default:
+                    cout << endl << "Nie ma takiej opcji w menu! Powrot do menu glownego." << endl << endl;
+                    break;
+                }
             }
         }
+        if (czyIstniejeAdresat == false) {
+            cout << endl << "Nie ma takiego adresata w ksiazce adresowej." << endl << endl;
+        }
+    } else {
+        cout << "Ksiazka adresowa jest pusta." << endl << endl;
     }
-
-    aktualizujKsiazke(adresaci);
-
+    system("pause");
 }
 
 void wyswietlWszystkieOsoby(vector <Adresat> &adresaci, int &iloscOsob) {

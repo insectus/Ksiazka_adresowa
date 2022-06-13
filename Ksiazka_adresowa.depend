@@ -14,3 +14,11 @@
 	<fstream>
 	<vector>
 
+1655093717 source:c:\ppp\lekcje\seminarium_17\ksiazka_adresowa\main.cpp
+	<iostream>
+	<sstream>
+	<windows.h>
+	<fstream>
+	<vector>
+	<algorithm>
+

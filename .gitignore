@@ -1,8 +1,3 @@
-bin/
-obj/
-*.txt
-Ksiazka_adresowa*
-
 # Prerequisites
 *.d
 
@@ -35,3 +30,9 @@ Ksiazka_adresowa*
 *.exe
 *.out
 *.app
+
+#Other
+bin/
+obj/
+*.txt
+Ksiazka_adresowa*
