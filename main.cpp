@@ -23,7 +23,7 @@ string konwersjaIntNaString();
 void wyszukajPoImieniu(vector <Adresat> adresaci, int &iloscOsob);
 void wyszukajPoNazwisku(vector <Adresat> adresaci, int &iloscOsob);
 void wyswietlWszystkieOsoby(vector <Adresat> &adresaci);
-void usunAdresata(vector <Adresat> &adresaci, int &iloscOsob);
+void usunAdresata(vector <Adresat> &adresaci);
 void edytujAdresata(vector <Adresat> &adresaci);
 Adresat wyodrebnianieAdresata(Adresat &adresat, int &kolejnePoleObiektuAdresat, string &wyodrebnioneDaneAdresata);
 string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst);
@@ -65,7 +65,7 @@ int main() {
             wyswietlWszystkieOsoby(adresaci);
             break;
         case '5':
-            usunAdresata(adresaci, iloscOsob);
+            usunAdresata(adresaci);
             break;
         case '6':
             edytujAdresata(adresaci);
@@ -325,40 +325,50 @@ void aktualizujKsiazke(vector <Adresat> &adresaci) {
     rename("temp.txt", "Ksiazka_adresowa.txt");
 }
 
-void usunAdresata(vector <Adresat> &adresaci, int &iloscOsob) {
+void usunAdresata(vector <Adresat> &adresaci) {
 
     int wybraneId;
     char potwierdzenieUsuniecia;
+    bool czyIstniejeAdresat = false;
 
     system("cls");
 
-    cout << "|----- Usun adresata -----|" << endl << endl;
+    if (!adresaci.empty()) {
+        cout << "|----- Usun adresata -----|" << endl << endl;
 
-    cout << "Podaj numer ID adresata ktorego chcesz usunac: ";
+        cout << "Podaj numer ID adresata ktorego chcesz usunac: ";
 
-    wybraneId = wczytajLiczbeCalkowita();
+        wybraneId = wczytajLiczbeCalkowita();
 
-    for (long long unsigned int i = 0; i < adresaci.size(); i++) {
-        if(wybraneId == adresaci[i].id) {
+        for (vector<Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++) {
+            if(itr -> id == wybraneId) {
 
-            cout << endl << endl << "Potwierdz wybor naciskajac 't': ";
+                czyIstniejeAdresat = true;
+                cout << endl << endl << "Potwierdz wybor naciskajac 't': ";
 
-            potwierdzenieUsuniecia = wczytajZnak();
+                potwierdzenieUsuniecia = wczytajZnak();
 
-            if(potwierdzenieUsuniecia == 't') {
-                adresaci.erase (adresaci.begin()+ i);
+                if(potwierdzenieUsuniecia == 't') {
+                    adresaci.erase(itr);
 
-                aktualizujKsiazke(adresaci);
+                    aktualizujKsiazke(adresaci);
 
-                cout << endl << "Adresat usuniety" << endl;
-                system("pause");
+                    cout << endl << "Adresat usuniety" << endl;
+                    break;
 
-            } else {
-                cout << endl << "Wybrales inny znak, usuwanie anulowane." << endl;
-                system("pause");
+                } else {
+                    cout << endl << "Wybrales inny znak, usuwanie anulowane." << endl;
+                    break;
+                }
             }
         }
+        if (czyIstniejeAdresat == false) {
+            cout << endl << "Nie ma takiego adresata w ksiazce adresowej" << endl << endl;
+        }
+    } else {
+        cout << "Ksiazka adresowa jest pusta" << endl << endl;
     }
+    system("pause");
 }
 
 string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst) {
