@@ -36,3 +36,7 @@ bin/
 obj/
 *.txt
 Ksiazka_adresowa*
+obj/Debug/main.o
+bin/Debug/Ksiazka_adresowa.exe
+Ksiazka_adresowa.layout
+

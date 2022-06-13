@@ -22,7 +22,7 @@ string wczytajLinie();
 string konwersjaIntNaString();
 void wyszukajPoImieniu(vector <Adresat> adresaci, int &iloscOsob);
 void wyszukajPoNazwisku(vector <Adresat> adresaci, int &iloscOsob);
-void wyswietlWszystkieOsoby(vector <Adresat> &adresaci, int &iloscOsob);
+void wyswietlWszystkieOsoby(vector <Adresat> &adresaci);
 void usunAdresata(vector <Adresat> &adresaci, int &iloscOsob);
 void edytujAdresata(vector <Adresat> &adresaci);
 Adresat wyodrebnianieAdresata(Adresat &adresat, int &kolejnePoleObiektuAdresat, string &wyodrebnioneDaneAdresata);
@@ -62,7 +62,7 @@ int main() {
             wyszukajPoNazwisku(adresaci, iloscOsob);
             break;
         case '4':
-            wyswietlWszystkieOsoby(adresaci, iloscOsob);
+            wyswietlWszystkieOsoby(adresaci);
             break;
         case '5':
             usunAdresata(adresaci, iloscOsob);
@@ -453,21 +453,21 @@ void edytujAdresata(vector <Adresat> &adresaci) {
     system("pause");
 }
 
-void wyswietlWszystkieOsoby(vector <Adresat> &adresaci, int &iloscOsob) {
+void wyswietlWszystkieOsoby(vector <Adresat> &adresaci) {
     system("cls");
 
     cout << "|----- Wyswietl ksiazke adresowa -----|" << endl << endl;
 
-    if (iloscOsob == 0) {
+    if (adresaci.size() == 0) {
         cout << endl << "Ksiazka adresowa jest pusta."<< endl;
     } else {
-        for (int i = 0; i < iloscOsob; i ++) {
-            cout << endl << "Id: " << adresaci[i].id << endl;
-            cout << "Imie: " << adresaci[i].imie << endl;
-            cout << "Nazwisko: " << adresaci[i].nazwisko << endl;
-            cout << "Numer telefonu: " << adresaci[i].numerTelefonu << endl;
-            cout << "Adres e-mail: " << adresaci[i].email << endl;
-            cout << "Adres: " << adresaci[i].adres << endl;
+        for (vector<Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++) {
+            cout << endl << "Id: " << itr->id << endl;
+            cout << "Imie: " << itr->imie << endl;
+            cout << "Nazwisko: " << itr->nazwisko << endl;
+            cout << "Numer telefonu: " << itr->numerTelefonu << endl;
+            cout << "Adres e-mail: " << itr->email << endl;
+            cout << "Adres: " << itr->adres << endl;
         }
     }
 
