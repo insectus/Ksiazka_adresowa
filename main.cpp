@@ -16,7 +16,7 @@ struct Adresat {
 
 int wczytajOsobyZPliku(vector <Adresat> &adresaci);
 int wczytajLiczbeCalkowita();
-int dodajOsobe(vector <Adresat> &adresaci, int &iloscOsob);
+void dodajOsobe(vector <Adresat> &adresaci);
 char wczytajZnak();
 string wczytajLinie();
 string konwersjaIntNaString();
@@ -30,12 +30,11 @@ string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst);
 void aktualizujKsiazke(vector <Adresat> &adresaci);
 
 int main() {
-    int iloscOsob = 0;
     char wybor;
 
     while (true) {
         vector <Adresat> adresaci;
-        iloscOsob = wczytajOsobyZPliku(adresaci);
+        wczytajOsobyZPliku(adresaci);
         system("cls");
 
         cout << "|----- KSIAZKA ADRESOWA -----|" << endl << endl;
@@ -53,7 +52,7 @@ int main() {
 
         switch (wybor) {
         case '1':
-            iloscOsob = dodajOsobe(adresaci, iloscOsob);
+            dodajOsobe(adresaci);
             break;
         case '2':
             wyszukajPoImieniu(adresaci);
@@ -202,16 +201,15 @@ int wczytajOsobyZPliku(vector <Adresat> &adresaci) {
     return ileOsob;
 }
 
-int dodajOsobe(vector <Adresat> &adresaci, int &iloscOsob) {
+void dodajOsobe(vector <Adresat> &adresaci) {
 
     Adresat adresat;
-    iloscOsob++;
     system("cls");
 
     cout << "|----- Dodaj nowego adresata -----|" << endl << endl;
 
     if(adresaci.empty()) {
-        adresat.id = iloscOsob;
+        adresat.id = 1;
     } else {
         adresat.id = adresaci.back().id + 1;
     }
@@ -228,18 +226,11 @@ int dodajOsobe(vector <Adresat> &adresaci, int &iloscOsob) {
 
     adresaci.push_back(adresat);
 
-    fstream ksiazkaAdresowa;
-    ksiazkaAdresowa.open("Ksiazka_adresowa.txt",ios::out | ios::app);
-
-    ksiazkaAdresowa << konwersjaIntNaString(adresat.id)<< "|" << adresat.imie << "|" << adresat.nazwisko;
-    ksiazkaAdresowa << "|" << adresat.numerTelefonu << "|" << adresat.email << "|" << adresat.adres << "|" << endl ;
-
-    ksiazkaAdresowa.close();
+    aktualizujKsiazke(adresaci);
 
     cout << endl << "Adresat dodany." << endl;
     system("pause");
 
-    return iloscOsob;
 }
 
 void wyszukajPoImieniu(vector <Adresat> adresaci) {
@@ -315,9 +306,9 @@ void aktualizujKsiazke(vector <Adresat> &adresaci) {
     fstream ksiazkaAdresowa;
     ksiazkaAdresowa.open("temp.txt", ios::out);
 
-    for(long long unsigned int i = 0; i < adresaci.size(); i++) {
-        ksiazkaAdresowa << konwersjaIntNaString(adresaci[i].id)<< "|" << adresaci[i].imie << "|" << adresaci[i].nazwisko;
-        ksiazkaAdresowa << "|" << adresaci[i].numerTelefonu << "|" << adresaci[i].email << "|" << adresaci[i].adres << "|" << endl ;
+    for(auto itr = adresaci.begin(); itr != adresaci.end(); itr++) {
+        ksiazkaAdresowa << konwersjaIntNaString(itr -> id)<< "|" << itr -> imie << "|" << itr -> nazwisko;
+        ksiazkaAdresowa << "|" << itr -> numerTelefonu << "|" << itr -> email << "|" << itr -> adres << "|" << endl ;
     }
 
     ksiazkaAdresowa.close();
