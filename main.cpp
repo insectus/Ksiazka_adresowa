@@ -11,15 +11,22 @@ string nazwaPliku = "KsiazkaAdresowa";
 
 struct Adresat {
     int id = 0;
-    string imie = "", nazwisko = "", numerTelefonu = "", email = "", adres = "";
+    string imie = ""; //, nazwisko = "";
 };
 
-int wczytajOsobyZPliku(vector <Adresat> &adresaci);
+struct Uzytkownik {
+    int id;
+    string nazwa, haslo;
+};
+
+
 int wczytajLiczbeCalkowita();
-void dodajOsobe(vector <Adresat> &adresaci);
 char wczytajZnak();
 string wczytajLinie();
 string konwersjaIntNaString();
+
+int wczytajOsobyZPliku(vector <Adresat> &adresaci);
+void dodajOsobe(vector <Adresat> &adresaci);
 void wyszukajPoImieniu(vector <Adresat> adresaci);
 void wyszukajPoNazwisku(vector <Adresat> adresaci);
 void wyswietlWszystkieOsoby(vector <Adresat> &adresaci);
@@ -29,53 +36,103 @@ Adresat wyodrebnianieAdresata(Adresat &adresat, int &kolejnePoleObiektuAdresat, 
 string zamienPierwszaLitereNaDuzaAPozostaleNaMale(string tekst);
 void aktualizujKsiazke(vector <Adresat> &adresaci);
 
+Uzytkownik wyodrebnianieUzytkownika(Uzytkownik &uzytkownik, int &kolejnePoleObiektuUzytkownik, string &wyodrebnioneDaneUzytkownik);
+void wczytajUzytkownikowZPliku(vector <Uzytkownik> &uzytkownicy);
+void aktualizujBazeUzytkownikow(vector <Uzytkownik> &uzytkownicy);
+void rejestracjaUzytkownika(vector<Uzytkownik> &uzytkownicy);
+int logowanie(vector<Uzytkownik> &uzytkownicy);
+void zmianaHasla(vector<Uzytkownik> &uzytkownicy, int &idZalogowanegoUzytkownika);
+
+
 int main() {
+    int idZalogowanegoUzytkownika = 0;
     char wybor;
 
     while (true) {
         vector <Adresat> adresaci;
+        vector <Uzytkownik> uzytkownicy;
         wczytajOsobyZPliku(adresaci);
-        system("cls");
+        wczytajUzytkownikowZPliku(uzytkownicy);
 
-        cout << "|----- KSIAZKA ADRESOWA -----|" << endl << endl;
+        if (idZalogowanegoUzytkownika == 0) {
 
-        cout << "1. Dodaj osobe" << endl;
-        cout << "2. Wyszukaj po imieniu" << endl;
-        cout << "3. Wyszukaj po nazwisku" << endl;
-        cout << "4. Wyswietl wszystkich znajomych" << endl;
-        cout << "5. Usun adresata" << endl;
-        cout << "6. Edytuj adresata" << endl;
-        cout << "9. Zakoncz" << endl << endl;
+            system("cls");
 
-        cout << "Wybierz co chcesz zrobic: ";
-        wybor = wczytajZnak();
+            cout << "     >>> MENU GLOWNE <<<     " << endl;
+            cout << "-----------------------------" << endl;
+            cout << "1. Rejestracja" << endl;
+            cout << "2. Logowanie" << endl;
+            cout << "9. Zakoncz" << endl;
+            cout << "-----------------------------" << endl;
+            cout << "Wybierz co chcesz zrobic: ";
 
-        switch (wybor) {
-        case '1':
-            dodajOsobe(adresaci);
-            break;
-        case '2':
-            wyszukajPoImieniu(adresaci);
-            break;
-        case '3':
-            wyszukajPoNazwisku(adresaci);
-            break;
-        case '4':
-            wyswietlWszystkieOsoby(adresaci);
-            break;
-        case '5':
-            usunAdresata(adresaci);
-            break;
-        case '6':
-            edytujAdresata(adresaci);
-            break;
-        case '9':
-            exit(0);
-            break;
-        default:
-            cout << endl << "Nie ma takiej opcji w menu!" << endl << endl;
-            system("pause");
-            break;
+            wybor = wczytajZnak();
+
+            switch (wybor) {
+            case '1':
+                rejestracjaUzytkownika(uzytkownicy);
+                break;
+            case '2':
+                idZalogowanegoUzytkownika = logowanie(uzytkownicy);
+                break;
+            case '9':
+                exit(0);
+                break;
+            default:
+                cout << endl << "Nie ma takiej opcji w menu!" << endl << endl;
+                system("pause");
+                break;
+            }
+        } else {
+
+            system("cls");
+
+            cout << "|----- MENU UZYTKOWNIKA -----|" << endl << endl;
+
+            cout << "1. Dodaj osobe" << endl;
+            cout << "2. Wyszukaj po imieniu" << endl;
+            cout << "3. Wyszukaj po nazwisku" << endl;
+            cout << "4. Wyswietl wszystkich znajomych" << endl;
+            cout << "5. Usun adresata" << endl;
+            cout << "6. Edytuj adresata" << endl;
+            cout << "-----------------------------" << endl;
+            cout << "7. Zmiana hasla" << endl;
+            cout << "8. Wylogowanie" << endl;
+            cout << "-----------------------------" << endl;
+
+            cout << "Wybierz co chcesz zrobic: ";
+            wybor = wczytajZnak();
+
+            switch (wybor) {
+            case '1':
+                dodajOsobe(adresaci);
+                break;
+            case '2':
+                wyszukajPoImieniu(adresaci);
+                break;
+            case '3':
+                //wyszukajPoNazwisku(adresaci);
+                break;
+            case '4':
+                wyswietlWszystkieOsoby(adresaci);
+                break;
+            case '5':
+                usunAdresata(adresaci);
+                break;
+            case '6':
+                edytujAdresata(adresaci);
+                break;
+            case '7':
+                zmianaHasla(uzytkownicy, idZalogowanegoUzytkownika);
+                break;
+            case '8':
+                idZalogowanegoUzytkownika = 0;
+                break;
+            default:
+                cout << endl << "Nie ma takiej opcji w menu!" << endl << endl;
+                system("pause");
+                break;
+            }
         }
     }
 
@@ -139,18 +196,12 @@ Adresat wyodrebnianieAdresata(Adresat &adresat, int &kolejnePoleObiektuAdresat, 
     case 2:
         adresat.imie = wyodrebnioneDaneAdresata;
         break;
-    case 3:
-        adresat.nazwisko = wyodrebnioneDaneAdresata;
-        break;
-    case 4:
-        adresat.numerTelefonu = wyodrebnioneDaneAdresata;
-        break;
-    case 5:
-        adresat.email = wyodrebnioneDaneAdresata;
-        break;
-    case 6:
-        adresat.adres = wyodrebnioneDaneAdresata;
-        break;
+        /*
+        case 3:
+            adresat.nazwisko = wyodrebnioneDaneAdresata;
+            break;
+            */
+
     }
     return adresat;
 }
@@ -215,14 +266,10 @@ void dodajOsobe(vector <Adresat> &adresaci) {
     }
     cout << "Podaj imie: ";
     adresat.imie = wczytajLinie();
-    cout << "Podaj nazwisko: ";
-    adresat.nazwisko = wczytajLinie();
-    cout << "Podaj numer telefonu: ";
-    adresat.numerTelefonu = wczytajLinie();
-    cout << "Podaj e-mail: ";
-    adresat.email = wczytajLinie();
-    cout << "Podaj adres: ";
-    adresat.adres = wczytajLinie();
+
+    //cout << "Podaj nazwisko: ";
+    //adresat.nazwisko = wczytajLinie();
+
 
     adresaci.push_back(adresat);
 
@@ -249,10 +296,9 @@ void wyszukajPoImieniu(vector <Adresat> adresaci) {
         if (itr -> imie == imie) {
             cout << endl << "Id: " << itr -> id << endl;
             cout << "Imie: " << itr -> imie << endl;
-            cout << "Nazwisko: " << itr -> nazwisko << endl;
-            cout << "Numer telefonu: " << itr -> numerTelefonu << endl;
-            cout << "Adres e-mail: " << itr -> email << endl;
-            cout << "Adres: " << itr -> adres << endl;
+
+            //cout << "Nazwisko: " << itr -> nazwisko << endl;
+
             ileOsob++;
         }
     }
@@ -280,17 +326,16 @@ void wyszukajPoNazwisku(vector <Adresat> adresaci) {
     cout << "Podaj nazwisko osoby ktora chcesz odnalezc: ";
     nazwisko = wczytajLinie();
 
+    /*
     for (vector<Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++) {
         if (itr -> nazwisko == nazwisko) {
             cout << endl << "Id: " << itr -> id << endl;
             cout << "Imie: " << itr -> imie << endl;
             cout << "Nazwisko: " << itr -> nazwisko << endl;
-            cout << "Numer telefonu: " << itr -> numerTelefonu << endl;
-            cout << "Adres e-mail: " << itr -> email << endl;
-            cout << "Adres: " << itr -> adres << endl;
             ileOsob++;
         }
     }
+    */
     if (ileOsob == 1) {
         odmianaKoncowkiSlowaOsoba = "osobe";
     }
@@ -307,8 +352,7 @@ void aktualizujKsiazke(vector <Adresat> &adresaci) {
     ksiazkaAdresowa.open("temp.txt", ios::out);
 
     for(auto itr = adresaci.begin(); itr != adresaci.end(); itr++) {
-        ksiazkaAdresowa << konwersjaIntNaString(itr -> id)<< "|" << itr -> imie << "|" << itr -> nazwisko;
-        ksiazkaAdresowa << "|" << itr -> numerTelefonu << "|" << itr -> email << "|" << itr -> adres << "|" << endl ;
+        ksiazkaAdresowa << konwersjaIntNaString(itr -> id)<< "|" << itr -> imie << "|" << endl; // itr -> nazwisko << "|" << endl;
     }
 
     ksiazkaAdresowa.close();
@@ -393,10 +437,9 @@ void edytujAdresata(vector <Adresat> &adresaci) {
 
                 cout << endl << "Ktore dane zaktualizowac: " << endl;
                 cout << "1 - Imie" << endl;
-                cout << "2 - Nazwisko" << endl;
-                cout << "3 - Numer telefonu" << endl;
-                cout << "4 - Email" << endl;
-                cout << "5 - Adres" << endl;
+
+                //cout << "2 - Nazwisko" << endl;
+
                 cout << "6 - Powrot" << endl;
 
                 cout << endl << "Wybierz 1-6: ";
@@ -411,31 +454,17 @@ void edytujAdresata(vector <Adresat> &adresaci) {
                     aktualizujKsiazke(adresaci);
                     cout << endl << "Imie zostalo zmienione" << endl;
                     break;
+
+                /*
                 case '2':
-                    cout << "Podaj nowe nazwisko: ";
-                    itr->nazwisko = wczytajLinie();
-                    itr->nazwisko = zamienPierwszaLitereNaDuzaAPozostaleNaMale(itr->nazwisko);
-                    aktualizujKsiazke(adresaci);
-                    cout <<  endl << "Nazwisko zostalo zmienione" << endl;
-                    break;
-                case '3':
-                    cout << "Podaj nowy numer telefonu: ";
-                    itr->numerTelefonu = wczytajLinie();
-                    aktualizujKsiazke(adresaci);
-                    cout <<  endl << "Numer telefonu zostal zmieniony" << endl;
-                    break;
-                case '4':
-                    cout <<  endl << "Podaj nowy email: ";
-                    itr->email = wczytajLinie();
-                    aktualizujKsiazke(adresaci);
-                    cout << "Email zostal zmieniony" << endl;
-                    break;
-                case '5':
-                    cout << "Podaj nowy adres: ";
-                    itr->adres = wczytajLinie();
-                    aktualizujKsiazke(adresaci);
-                    cout <<  endl << "Adres zostal zmieniony" << endl;
-                    break;
+                cout << "Podaj nowe nazwisko: ";
+                itr->nazwisko = wczytajLinie();
+                itr->nazwisko = zamienPierwszaLitereNaDuzaAPozostaleNaMale(itr->nazwisko);
+                aktualizujKsiazke(adresaci);
+                cout <<  endl << "Nazwisko zostalo zmienione" << endl;
+                break;
+                */
+
                 case '6':
                     cout << endl << "Powrot do menu glownego" << endl << endl;
                     break;
@@ -465,13 +494,175 @@ void wyswietlWszystkieOsoby(vector <Adresat> &adresaci) {
         for (vector<Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++) {
             cout << endl << "Id: " << itr->id << endl;
             cout << "Imie: " << itr->imie << endl;
-            cout << "Nazwisko: " << itr->nazwisko << endl;
-            cout << "Numer telefonu: " << itr->numerTelefonu << endl;
-            cout << "Adres e-mail: " << itr->email << endl;
-            cout << "Adres: " << itr->adres << endl;
+            //cout << "Nazwisko: " << itr->nazwisko << endl;
         }
     }
 
     cout << endl;
     system("pause");
 }
+
+
+Uzytkownik wyodrebnianieUzytkownika(Uzytkownik &uzytkownik, int &kolejnePoleObiektuUzytkownik, string &wyodrebnioneDaneUzytkownika) {
+
+    switch (kolejnePoleObiektuUzytkownik) {
+    case 1:
+        uzytkownik.id = atoi(wyodrebnioneDaneUzytkownika.c_str());
+        break;
+    case 2:
+        uzytkownik.nazwa = wyodrebnioneDaneUzytkownika;
+        break;
+    case 3:
+        uzytkownik.haslo = wyodrebnioneDaneUzytkownika;
+        break;
+    }
+    return uzytkownik;
+}
+
+void wczytajUzytkownikowZPliku(vector <Uzytkownik> &uzytkownicy) {
+
+    Uzytkownik uzytkownik;
+    int numerLini = 1;
+    int dlugoscWczytanejLinii;
+    int kolejnePoleObiektuUzytkownik;
+    int poczatek;
+    string linia;
+    string wyodrebnioneDaneUzytkownika;
+
+    fstream bazaUzytkownikow;
+    bazaUzytkownikow.open("Uzytkownicy.txt",ios::in);
+
+    if(bazaUzytkownikow.good() == true) {
+
+        while(getline(bazaUzytkownikow,linia)) {
+
+            dlugoscWczytanejLinii = linia.length();
+            kolejnePoleObiektuUzytkownik = 0;
+            poczatek = 0;
+
+            for (int i = 0; i < dlugoscWczytanejLinii; i++) {
+
+                if(linia[i] == '|') {
+
+                    wyodrebnioneDaneUzytkownika = linia.substr (poczatek,(i - poczatek));
+                    kolejnePoleObiektuUzytkownik++;
+
+                    uzytkownik = wyodrebnianieUzytkownika(uzytkownik, kolejnePoleObiektuUzytkownik, wyodrebnioneDaneUzytkownika);
+
+                    poczatek = i + 1;
+                }
+            }
+
+            uzytkownicy.push_back(uzytkownik);
+            numerLini++;
+        }
+        bazaUzytkownikow.close();
+    }
+}
+
+void aktualizujBazeUzytkownikow(vector <Uzytkownik> &uzytkownicy) {
+    fstream bazaUzytkownikow;
+    bazaUzytkownikow.open("temp.txt", ios::out);
+
+    for(auto itr = uzytkownicy.begin(); itr != uzytkownicy.end(); itr++) {
+        bazaUzytkownikow << konwersjaIntNaString(itr -> id)<< "|" << itr -> nazwa << "|" << itr -> haslo << "|" << endl;
+    }
+
+    bazaUzytkownikow.close();
+    remove("Uzytkownicy.txt");
+    rename("temp.txt", "Uzytkownicy.txt");
+}
+
+void rejestracjaUzytkownika(vector<Uzytkownik> &uzytkownicy) {
+
+    Uzytkownik uzytkownik;
+    string nazwa, haslo;
+    auto itr = uzytkownicy.begin();
+
+    cout << endl << "Podaj nazwe uzytkownika: ";
+    nazwa = wczytajLinie();
+
+    while (itr < uzytkownicy.end()) {
+        if (itr -> nazwa == nazwa) {
+
+            cout << "Taki uzytkownik istnieje.Wpisz inna nazwe uzytkownika: ";
+            nazwa = wczytajLinie();
+            itr = uzytkownicy.begin();
+
+        } else {
+            itr++;
+        }
+    }
+
+    if(uzytkownicy.empty()) {
+        uzytkownik.id = 1;
+    } else {
+        uzytkownik.id = uzytkownicy.back().id + 1;
+    }
+
+    cout << "Podaj haslo: ";
+    haslo = wczytajLinie();
+
+    uzytkownik.nazwa = nazwa;
+    uzytkownik.haslo = haslo;
+    uzytkownicy.push_back(uzytkownik);
+    aktualizujBazeUzytkownikow(uzytkownicy);
+
+    cout << "Konto zalozone";
+    Sleep(1000);
+}
+
+int logowanie(vector<Uzytkownik> &uzytkownicy) {
+
+    string nazwa, haslo;
+    auto itr = uzytkownicy.begin();
+
+    cout << endl << "Podaj login: ";
+    nazwa = wczytajLinie();
+
+    while (itr < uzytkownicy.end()) {
+        if (itr -> nazwa == nazwa) {
+
+            for (int proby = 0; proby < 3; proby++) {
+
+                cout << "Podaj haslo. Pozostalo prob " << 3 - proby << ": ";
+                haslo = wczytajLinie();
+
+                if (itr -> haslo == haslo) {
+
+                    cout << "Zalogowales sie." << endl;
+                    return itr -> id;
+
+                }
+            }
+            cout << "Podales 3 razy bledne haslo. Powrot do Menu glownego." << endl;
+            Sleep(3000);
+            return 0;
+        }
+        itr++;
+    }
+    cout << "Nie ma uzytkownika z takim loginem. Powrot do Menu glownego." << endl;
+    Sleep(1500);
+    return 0;
+}
+
+void zmianaHasla(vector<Uzytkownik> &uzytkownicy, int &idZalogowanegoUzytkownika) {
+
+    Uzytkownik uzytkownik;
+    string haslo;
+
+    cout << endl << "Podaj nowe haslo: ";
+    haslo = wczytajLinie();
+
+    for (auto itr = uzytkownicy.begin(); itr <= uzytkownicy.end(); itr++) {
+        if (itr -> id == idZalogowanegoUzytkownika) {
+
+            itr -> haslo = haslo;
+        }
+    }
+
+    aktualizujBazeUzytkownikow(uzytkownicy);
+    cout << "Haslo zostalo zmienione";
+    Sleep(1500);
+}
+
